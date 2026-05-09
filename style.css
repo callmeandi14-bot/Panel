@@ -126,7 +126,6 @@ body {
     padding: 10px 14px;
     font-size: 13px; color: var(--red);
     margin-bottom: 16px;
-    animation: shake 0.3s ease;
 }
 .error-banner.hidden { display: none; }
 
@@ -141,43 +140,8 @@ body {
     font-size: 12px; font-weight: 500;
     color: var(--text2); letter-spacing: 0.3px;
 }
-.field-input-wrap {
-    position: relative; display: flex; align-items: center;
-}
-.field-icon {
-    position: absolute; left: 14px;
-    color: var(--text3); pointer-events: none;
-    flex-shrink: 0;
-}
-.field-input {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 13px 14px 13px 42px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; color: var(--text);
-    transition: border-color 0.2s, background 0.2s;
-    outline: none;
-}
-.field-input::placeholder { color: var(--text3); }
-.field-input:focus {
-    border-color: rgba(52,211,153,0.4);
-    background: rgba(52,211,153,0.04);
-}
-.field-input.filled {
-    border-color: rgba(52,211,153,0.3);
-    color: var(--accent);
-}
-.field-input[readonly] { cursor: default; }
 
-/* Google field wrapper */
-.google-field-wrap {
-    position: relative;
-    width: 100%;
-}
-
-/* Email display custom UI */
+/* Email display */
 .email-display {
     display: flex; align-items: center; gap: 10px;
     padding: 13px 14px;
@@ -189,6 +153,10 @@ body {
     transition: border-color 0.2s, background 0.2s;
     min-height: 50px;
     user-select: none;
+}
+.email-display:hover {
+    border-color: var(--border2);
+    background: rgba(255,255,255,0.06);
 }
 .email-display.empty { color: var(--text3); }
 .email-display.filled {
@@ -212,21 +180,30 @@ body {
     color: var(--text2); flex-shrink: 0;
 }
 
-/* GSI overlay — invisible tapi clickable */
-.gsi-overlay {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    border-radius: var(--radius-sm);
-    opacity: 0;
-    cursor: pointer;
-    z-index: 10;
+/* Password field */
+.field-input-wrap {
+    position: relative; display: flex; align-items: center;
 }
-.gsi-overlay > div,
-.gsi-overlay iframe {
-    width: 100% !important;
-    height: 100% !important;
-    min-height: 50px;
+.field-icon {
+    position: absolute; left: 14px;
+    color: var(--text3); pointer-events: none;
+    flex-shrink: 0;
+}
+.field-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 13px 14px 13px 42px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+}
+.field-input::placeholder { color: var(--text3); }
+.field-input:focus {
+    border-color: rgba(52,211,153,0.4);
+    background: rgba(52,211,153,0.04);
 }
 
 /* Toggle password */
@@ -655,7 +632,6 @@ body {
     60%       { transform: translateX(6px); }
 }
 .shake { animation: shake 0.4s ease; }
-
 .hidden { display: none !important; }
 
 /* Mobile */
