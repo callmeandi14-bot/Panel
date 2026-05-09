@@ -171,21 +171,62 @@ body {
 }
 .field-input[readonly] { cursor: default; }
 
-/* Google pick button (inside email field) */
-.google-pick-btn {
-    position: absolute; right: 8px;
-    display: flex; align-items: center; gap: 6px;
-    padding: 6px 10px;
+/* Google field wrapper */
+.google-field-wrap {
+    position: relative;
+    width: 100%;
+}
+
+/* Email display custom UI */
+.email-display {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    min-height: 50px;
+    user-select: none;
+}
+.email-display.empty { color: var(--text3); }
+.email-display.filled {
+    color: var(--accent);
+    border-color: rgba(52,211,153,0.3);
+    background: rgba(52,211,153,0.04);
+}
+.email-display #email-text {
+    flex: 1; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Google badge pill */
+.google-badge {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 10px;
     background: rgba(255,255,255,0.06);
     border: 1px solid var(--border2);
-    border-radius: 8px;
-    color: var(--text2); font-size: 12px; font-weight: 500;
-    cursor: pointer; transition: all 0.2s;
-    font-family: 'DM Sans', sans-serif;
+    border-radius: 99px;
+    font-size: 11px; font-weight: 500;
+    color: var(--text2); flex-shrink: 0;
 }
-.google-pick-btn:hover {
-    background: rgba(255,255,255,0.1);
-    color: var(--text);
+
+/* GSI overlay — invisible tapi clickable */
+.gsi-overlay {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+.gsi-overlay > div,
+.gsi-overlay iframe {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 50px;
 }
 
 /* Toggle password */
