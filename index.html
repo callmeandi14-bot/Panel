@@ -287,24 +287,16 @@
             <div class="login-form">
 
                 <!-- Email -->
-                <div class="field-group">
-                    <label class="field-label">Akun Google Admin</label>
-                    <div id="email-display" class="email-display empty" onclick="triggerGoogle()">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
-                        </svg>
-                        <span id="email-text" class="email-text">Klik untuk pilih akun Google</span>
-                        <div class="google-badge">
-                            <svg width="13" height="13" viewBox="0 0 24 24">
-                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                            </svg>
-                            <span id="badge-text">Pilih</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Email -->
+<div class="field-group">
+    <label class="field-label">Email Google Admin</label>
+    <div class="field-input-wrap">
+        <svg class="field-icon" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+        </svg>
+        <input id="input-email" type="email" placeholder="admin@gmail.com" class="field-input">
+    </div>
+</div>
 
                 <!-- Password -->
                 <div class="field-group">
@@ -336,105 +328,9 @@
 
         <p class="footer-note">RTI Dashboard v1.0 · Akses terbatas untuk admin</p>
     </div>
-
-    <script src="https://accounts.google.com/gsi/client" async></script>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithCredential, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-
-        const app = initializeApp({
-            apiKey: "AIzaSyBFbXa_03QYM8DlBkDw7UMZttBMABdtdf4",
-            authDomain: "rti-dashboard-7cd8f.firebaseapp.com",
-            projectId: "rti-dashboard-7cd8f",
-            storageBucket: "rti-dashboard-7cd8f.firebasestorage.app",
-            messagingSenderId: "328210653829",
-            appId: "1:328210653829:web:2796c8a0995bfdf232bfec"
-        });
-        const auth = getAuth(app);
-
-        const ADMIN_PASSWORD = "adminrti135";
-        const ALLOWED_ADMINS = ["da4389490@gmail.com"];
-        let googleUser = null;
-        let gsiReady = false;
-
-        // Poll sampai GSI siap
-        const poll = setInterval(() => {
-            if (window.google?.accounts?.id) {
-                clearInterval(poll);
-                google.accounts.id.initialize({
-                    client_id: "328210653829-l7f5c1emca2hpkngkll0oqjo19hlnjta.apps.googleusercontent.com",
-                    callback: handleGoogleToken,
-                    auto_select: false,
-                    cancel_on_tap_outside: true,
-                    use_fedcm_for_prompt: false
-                });
-                gsiReady = true;
-            }
-        }, 100);
-
-        window.triggerGoogle = () => {
-            if (!gsiReady) {
-                showError('Google belum siap, tunggu sebentar lalu coba lagi.');
-                return;
-            }
-            google.accounts.id.prompt((n) => {
-                if (n.isNotDisplayed() || n.isSkippedMoment()) {
-                    // Prompt diblokir browser — paksa re-init dengan select_account
-                    google.accounts.id.initialize({
-                        client_id: "328210653829-l7f5c1emca2hpkngkll0oqjo19hlnjta.apps.googleusercontent.com",
-                        callback: handleGoogleToken,
-                        auto_select: false,
-                        cancel_on_tap_outside: true,
-                        use_fedcm_for_prompt: false,
-                        prompt_parent_id: undefined
-                    });
-                    google.accounts.id.prompt();
-                }
-            });
-        };
-
-        async function handleGoogleToken(response) {
-            try {
-                const cred = GoogleAuthProvider.credential(response.credential);
-                const result = await signInWithCredential(auth, cred);
-                const user = result.user;
-
-                if (!ALLOWED_ADMINS.includes(user.email)) {
-                    await signOut(auth);
-                    showError('Akun ini tidak memiliki akses admin!');
-                    return;
-                }
-
-                googleUser = user;
-                hideError();
-                document.getElementById('email-text').textContent = user.email;
-                document.getElementById('badge-text').textContent = 'Ganti';
-                const d = document.getElementById('email-display');
-                d.classList.remove('empty');
-                d.classList.add('filled');
-                setTimeout(() => document.getElementById('input-password').focus(), 100);
-
-            } catch(e) {
-                showError('Gagal login Google: ' + e.message);
-            }
-        }
-
-        document.getElementById('toggle-pw-btn').addEventListener('click', () => {
-            const inp = document.getElementById('input-password');
-            inp.type = inp.type === 'password' ? 'text' : 'password';
-        });
-
-        document.getElementById('input-password').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') doLogin();
-        });
-
-        document.getElementById('login-btn').addEventListener('click', doLogin);
-
-        async function doLogin() {
-<script type="module">
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
     const app = initializeApp({
         apiKey: "AIzaSyBFbXa_03QYM8DlBkDw7UMZttBMABdtdf4",
@@ -445,40 +341,9 @@
         appId: "1:328210653829:web:2796c8a0995bfdf232bfec"
     });
     const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
 
     const ADMIN_PASSWORD = "adminrti135";
     const ALLOWED_ADMINS = ["da4389490@gmail.com"];
-    let googleUser = null;
-
-    // Klik area email → langsung popup Google
-    window.triggerGoogle = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-
-            if (!ALLOWED_ADMINS.includes(user.email)) {
-                await signOut(auth);
-                showError('Akun ini tidak memiliki akses admin!');
-                return;
-            }
-
-            googleUser = user;
-            hideError();
-            document.getElementById('email-text').textContent = user.email;
-            document.getElementById('badge-text').textContent = 'Ganti';
-            const d = document.getElementById('email-display');
-            d.classList.remove('empty');
-            d.classList.add('filled');
-            setTimeout(() => document.getElementById('input-password').focus(), 100);
-
-        } catch(e) {
-            if (e.code !== 'auth/popup-closed-by-user') {
-                showError('Gagal login Google: ' + e.message);
-            }
-        }
-    };
 
     document.getElementById('toggle-pw-btn').addEventListener('click', () => {
         const inp = document.getElementById('input-password');
@@ -492,14 +357,23 @@
     document.getElementById('login-btn').addEventListener('click', doLogin);
 
     async function doLogin() {
-        if (!googleUser) {
-            showError('Klik kolom email dulu untuk pilih akun Google!');
-            document.getElementById('email-display').classList.add('shake');
-            setTimeout(() => document.getElementById('email-display').classList.remove('shake'), 500);
+        const email = document.getElementById('input-email').value.trim();
+        const pw = document.getElementById('input-password').value;
+
+        if (!email) {
+            showError('Masukkan email admin!');
+            document.getElementById('input-email').focus();
             return;
         }
-        const pw = document.getElementById('input-password').value;
-        if (!pw) { showError('Masukkan password admin!'); return; }
+        if (!ALLOWED_ADMINS.includes(email)) {
+            showError('Email ini tidak memiliki akses admin!');
+            return;
+        }
+        if (!pw) {
+            showError('Masukkan password admin!');
+            document.getElementById('input-password').focus();
+            return;
+        }
         if (pw !== ADMIN_PASSWORD) {
             showError('Password salah!');
             document.getElementById('input-password').value = '';
@@ -507,11 +381,12 @@
             setTimeout(() => document.getElementById('input-password').classList.remove('shake'), 500);
             return;
         }
+
         setLoading(true);
         sessionStorage.setItem('rti_admin', JSON.stringify({
-            name: googleUser.displayName,
-            email: googleUser.email,
-            photo: googleUser.photoURL
+            name: email.split('@')[0],
+            email: email,
+            photo: null
         }));
         setTimeout(() => { window.location.href = 'panel.html'; }, 700);
     }
@@ -529,6 +404,6 @@
         document.getElementById('login-arrow').classList.toggle('hidden', on);
         document.getElementById('login-btn').disabled = on;
     }
-    </script>
+  </script>
 </body>
 </html>
