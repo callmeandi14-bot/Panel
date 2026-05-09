@@ -330,7 +330,8 @@
     </div>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const app = initializeApp({
         apiKey: "AIzaSyBFbXa_03QYM8DlBkDw7UMZttBMABdtdf4",
@@ -341,9 +342,41 @@
         appId: "1:328210653829:web:2796c8a0995bfdf232bfec"
     });
     const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
 
     const ADMIN_PASSWORD = "adminrti135";
-    const ALLOWED_ADMINS = ["da4389490@gmail.com"];
+    let googleUser = null;
+
+    window.triggerGoogle = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
+            // Cek apakah email ada di collection admins
+            const adminDoc = await getDoc(doc(db, 'admins', user.email));
+            if (!adminDoc.exists()) {
+                await signOut(auth);
+                showError('Akun ini tidak memiliki akses admin!');
+                return;
+            }
+
+            googleUser = user;
+            hideError();
+            document.getElementById('email-text').textContent = user.email;
+            document.getElementById('badge-text').textContent = 'Ganti';
+            const d = document.getElementById('email-display');
+            d.classList.remove('empty');
+            d.classList.add('filled');
+            setTimeout(() => document.getElementById('input-password').focus(), 100);
+
+        } catch(e) {
+            if (e.code !== 'auth/popup-closed-by-user') {
+                showError('Gagal login: ' + e.message);
+            }
+        }
+    };
 
     document.getElementById('toggle-pw-btn').addEventListener('click', () => {
         const inp = document.getElementById('input-password');
@@ -357,23 +390,14 @@
     document.getElementById('login-btn').addEventListener('click', doLogin);
 
     async function doLogin() {
-        const email = document.getElementById('input-email').value.trim();
+        if (!googleUser) {
+            showError('Klik kolom email dulu untuk pilih akun Google!');
+            document.getElementById('email-display').classList.add('shake');
+            setTimeout(() => document.getElementById('email-display').classList.remove('shake'), 500);
+            return;
+        }
         const pw = document.getElementById('input-password').value;
-
-        if (!email) {
-            showError('Masukkan email admin!');
-            document.getElementById('input-email').focus();
-            return;
-        }
-        if (!ALLOWED_ADMINS.includes(email)) {
-            showError('Email ini tidak memiliki akses admin!');
-            return;
-        }
-        if (!pw) {
-            showError('Masukkan password admin!');
-            document.getElementById('input-password').focus();
-            return;
-        }
+        if (!pw) { showError('Masukkan password admin!'); return; }
         if (pw !== ADMIN_PASSWORD) {
             showError('Password salah!');
             document.getElementById('input-password').value = '';
@@ -381,12 +405,11 @@
             setTimeout(() => document.getElementById('input-password').classList.remove('shake'), 500);
             return;
         }
-
         setLoading(true);
         sessionStorage.setItem('rti_admin', JSON.stringify({
-            name: email.split('@')[0],
-            email: email,
-            photo: null
+            name: googleUser.displayName,
+            email: googleUser.email,
+            photo: googleUser.photoURL
         }));
         setTimeout(() => { window.location.href = 'panel.html'; }, 700);
     }
@@ -404,6 +427,6 @@
         document.getElementById('login-arrow').classList.toggle('hidden', on);
         document.getElementById('login-btn').disabled = on;
     }
-  </script>
+        </script>
 </body>
 </html>
