@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTI PANEL — Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+
+    <!-- Background grid -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <div class="login-wrapper">
+
+        <!-- Branding -->
+        <div class="login-brand">
+            <div class="brand-icon">
+                <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                    </path>
+                </svg>
+            </div>
+            <div>
+                <h1 class="brand-title">RTI<span>.PANEL</span></h1>
+                <p class="brand-sub">Admin Access — Restricted</p>
+            </div>
+        </div>
+
+        <!-- Login Card -->
+        <div class="login-card">
+            <div class="login-card-header">
+                <h2>Masuk ke Panel</h2>
+                <p>Isi email & password untuk lanjut</p>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="error-banner" class="error-banner hidden">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span id="error-text"></span>
+            </div>
+
+            <!-- Google Sign In (hidden, triggered programmatically) -->
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
+            <div id="g_id_onload"
+                data-client_id="328210653829-l7f5c1emca2hpkngkll0oqjo19hlnjta.apps.googleusercontent.com"
+                data-callback="handleGoogleToken"
+                data-auto_prompt="false">
+            </div>
+
+            <!-- Form -->
+            <div class="login-form">
+
+                <!-- Email field dengan tombol Google di dalam -->
+                <div class="field-group">
+                    <label class="field-label">Email Google Admin</label>
+                    <div class="field-input-wrap">
+                        <svg class="field-icon" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                        </svg>
+                        <input id="input-email" type="email" placeholder="admin@gmail.com" class="field-input" readonly>
+                        <!-- Google button kecil di dalam field -->
+                        <button id="google-pick-btn" class="google-pick-btn" type="button">
+                            <svg width="16" height="16" viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Pilih Akun
+                        </button>
+                    </div>
+                    <!-- Google Sign In button tersembunyi -->
+                    <div id="g_id_signin_hidden" class="hidden">
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-size="large"
+                            data-theme="outline"
+                            data-text="sign_in_with"
+                            data-shape="rectangular"
+                            data-logo_alignment="left">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password field -->
+                <div class="field-group">
+                    <label class="field-label">Password Admin</label>
+                    <div class="field-input-wrap">
+                        <svg class="field-icon" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        <input id="input-password" type="password" placeholder="••••••••••" class="field-input">
+                        <button id="toggle-pw-btn" class="toggle-pw-btn" type="button">
+                            <svg id="eye-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button id="login-btn" class="login-btn" type="button">
+                    <span id="login-btn-text">Masuk ke Panel</span>
+                    <div id="login-spinner" class="spinner hidden"></div>
+                    <svg id="login-arrow" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </button>
+
+            </div>
+        </div>
+
+        <p class="login-footer-note">RTI Dashboard v1.0 · Akses terbatas untuk admin</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithCredential, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+        const app = initializeApp({
+            apiKey: "AIzaSyBFbXa_03QYM8DlBkDw7UMZttBMABdtdf4",
+            authDomain: "rti-dashboard-7cd8f.firebaseapp.com",
+            projectId: "rti-dashboard-7cd8f",
+            storageBucket: "rti-dashboard-7cd8f.firebasestorage.app",
+            messagingSenderId: "328210653829",
+            appId: "1:328210653829:web:2796c8a0995bfdf232bfec"
+        });
+        const auth = getAuth(app);
+
+        const ADMIN_PASSWORD = "adminrti135";
+        const ALLOWED_ADMINS = ["da4389490@gmail.com"];
+
+        let googleCredential = null;
+        let googleUser = null;
+
+        // Simpan data user ke sessionStorage supaya panel.html bisa baca
+        function saveSession(user) {
+            sessionStorage.setItem('rti_admin', JSON.stringify({
+                name: user.displayName,
+                email: user.email,
+                photo: user.photoURL
+            }));
+        }
+
+        // Callback dari Google Sign In
+        window.handleGoogleToken = async (response) => {
+            try {
+                googleCredential = GoogleAuthProvider.credential(response.credential);
+                const result = await signInWithCredential(auth, googleCredential);
+                googleUser = result.user;
+
+                if (!ALLOWED_ADMINS.includes(googleUser.email)) {
+                    await signOut(auth);
+                    googleUser = null;
+                    googleCredential = null;
+                    showError('Akun ini tidak memiliki akses admin!');
+                    document.getElementById('input-email').value = '';
+                    return;
+                }
+
+                // Tampilkan email di field
+                document.getElementById('input-email').value = googleUser.email;
+                document.getElementById('input-email').classList.add('filled');
+                hideError();
+
+                // Focus ke password
+                document.getElementById('input-password').focus();
+
+            } catch (e) {
+                showError('Login Google gagal: ' + e.message);
+            }
+        };
+
+        // Tombol "Pilih Akun" — trigger Google Sign In
+        document.getElementById('google-pick-btn').addEventListener('click', () => {
+            // Reset kalau ganti akun
+            googleUser = null;
+            googleCredential = null;
+            document.getElementById('input-email').value = '';
+            document.getElementById('input-email').classList.remove('filled');
+
+            // Klik tombol g_id_signin yang tersembunyi
+            const gBtn = document.querySelector('#g_id_signin_hidden .g_id_signin div[role="button"]');
+            if (gBtn) {
+                gBtn.click();
+            } else {
+                // Fallback: tampilkan div signin sebentar
+                const wrap = document.getElementById('g_id_signin_hidden');
+                wrap.classList.remove('hidden');
+                setTimeout(() => {
+                    const b = wrap.querySelector('div[role="button"]');
+                    if (b) b.click();
+                    wrap.classList.add('hidden');
+                }, 100);
+            }
+        });
+
+        // Toggle password visibility
+        document.getElementById('toggle-pw-btn').addEventListener('click', () => {
+            const inp = document.getElementById('input-password');
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        });
+
+        // Enter di password field → login
+        document.getElementById('input-password').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') doLogin();
+        });
+
+        // Tombol login
+        document.getElementById('login-btn').addEventListener('click', doLogin);
+
+        async function doLogin() {
+            if (!googleUser) {
+                showError('Pilih akun Google dulu!');
+                document.getElementById('google-pick-btn').classList.add('shake');
+                setTimeout(() => document.getElementById('google-pick-btn').classList.remove('shake'), 500);
+                return;
+            }
+
+            const pw = document.getElementById('input-password').value;
+            if (!pw) {
+                showError('Masukkan password admin!');
+                document.getElementById('input-password').focus();
+                return;
+            }
+
+            if (pw !== ADMIN_PASSWORD) {
+                showError('Password salah!');
+                document.getElementById('input-password').value = '';
+                document.getElementById('input-password').classList.add('shake');
+                setTimeout(() => document.getElementById('input-password').classList.remove('shake'), 500);
+                return;
+            }
+
+            // Sukses → loading state
+            setLoading(true);
+            saveSession(googleUser);
+
+            setTimeout(() => {
+                window.location.href = 'panel.html';
+            }, 800);
+        }
+
+        function showError(msg) {
+            const banner = document.getElementById('error-banner');
+            document.getElementById('error-text').textContent = msg;
+            banner.classList.remove('hidden');
+            banner.classList.add('show');
+        }
+
+        function hideError() {
+            document.getElementById('error-banner').classList.add('hidden');
+            document.getElementById('error-banner').classList.remove('show');
+        }
+
+        function setLoading(state) {
+            const btn = document.getElementById('login-btn');
+            const text = document.getElementById('login-btn-text');
+            const spinner = document.getElementById('login-spinner');
+            const arrow = document.getElementById('login-arrow');
+
+            if (state) {
+                btn.disabled = true;
+                btn.classList.add('loading');
+                text.textContent = 'Masuk...';
+                spinner.classList.remove('hidden');
+                arrow.classList.add('hidden');
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('loading');
+                text.textContent = 'Masuk ke Panel';
+                spinner.classList.add('hidden');
+                arrow.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
