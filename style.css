@@ -642,6 +642,85 @@ body {
     .panel-main { padding-left: 16px; padding-right: 16px; }
 }
 /* ==========================================
+   THEME TOGGLE — setting.html
+   ========================================== */
+
+.theme-icon {
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.15);
+    color: #a78bfa;
+}
+
+.theme-toggle-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.theme-option {
+    position: relative;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.theme-option:hover { border-color: var(--border2); }
+.theme-option.active {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+}
+
+.theme-preview {
+    width: 100%; height: 64px;
+    border-radius: 6px; padding: 6px;
+    display: flex; flex-direction: column; gap: 4px;
+    overflow: hidden;
+}
+.dark-preview {
+    background: #060d1a;
+    border: 1px solid rgba(255,255,255,0.07);
+}
+.light-preview {
+    background: #f1f5f9;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.preview-bar {
+    height: 8px; border-radius: 3px; width: 60%;
+}
+.dark-preview .preview-bar { background: rgba(255,255,255,0.15); }
+.light-preview .preview-bar { background: rgba(0,0,0,0.15); }
+
+.preview-card {
+    height: 18px; border-radius: 3px; width: 100%;
+}
+.preview-card.short { width: 70%; }
+.dark-preview .preview-card { background: rgba(255,255,255,0.06); }
+.light-preview .preview-card { background: rgba(0,0,0,0.06); }
+
+.theme-option-label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500;
+    color: var(--text2);
+}
+.theme-option.active .theme-option-label { color: var(--accent); }
+
+.theme-check {
+    position: absolute; top: 8px; right: 8px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #052e16;
+    display: none;
+    align-items: center; justify-content: center;
+}
+.theme-check.show { display: flex; }
+
+/* ==========================================
    LIGHT MODE
    ========================================== */
 
@@ -666,9 +745,5 @@ body.light .bg-grid {
 body.light .hamburger-btn span { background: var(--text2); }
 body.light .panel-sidebar { background: #e2e8f0; }
 body.light .sidebar-admin-card { background: rgba(52,211,153,0.08); }
-body.light .time-chip {
-    background: rgba(52,211,153,0.15);
-}
-body.light .toggle-row {
-    background: rgba(0,0,0,0.03);
-}
+body.light .toggle-row { background: rgba(0,0,0,0.03); }
+body.light .time-chip { background: rgba(52,211,153,0.15); }
