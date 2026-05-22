@@ -77,13 +77,8 @@
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.2s;
         }
-        .save-btn:hover {
-            background: var(--accent);
-            color: #052e16;
-        }
-        .save-btn.saving {
-            opacity: 0.6; pointer-events: none;
-        }
+        .save-btn:hover { background: var(--accent); color: #052e16; }
+        .save-btn.saving { opacity: 0.6; pointer-events: none; }
         .toast {
             position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
             background: #052e16;
@@ -98,6 +93,17 @@
             white-space: nowrap;
         }
         .toast.show { opacity: 1; }
+        .debug-box {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(52,211,153,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: #34d399;
+            word-break: break-all;
+            line-height: 1.8;
+        }
         body.light .staff-row { background: rgba(0,0,0,0.02); }
         body.light .staff-nama-input { background: rgba(0,0,0,0.03); color: var(--text); }
         body.light .toast { background: #d1fae5; color: #065f46; }
@@ -107,10 +113,9 @@
 
     <div class="bg-grid"></div>
 
-    <!-- HEADER -->
     <header class="panel-header">
         <div class="panel-header-inner">
-            <button id="hamburger" class="hamburger-btn" aria-label="Toggle menu">
+            <button id="hamburger" class="hamburger-btn">
                 <span></span><span></span><span></span>
             </button>
             <div class="panel-logo">RTI<span>.PANEL</span></div>
@@ -131,7 +136,6 @@
         </div>
     </header>
 
-    <!-- SIDEBAR -->
     <div id="sidebar-overlay" class="sidebar-overlay"></div>
     <aside id="sidebar" class="panel-sidebar">
         <div class="sidebar-head">
@@ -150,44 +154,29 @@
                 </div>
             </div>
         </div>
-
         <div class="sidebar-divider"></div>
-
         <nav class="sidebar-nav">
             <a href="panel.html" class="sidebar-item">
-                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                </svg>
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 <span>Dashboard</span>
             </a>
             <a href="staff-panel.html" class="sidebar-item active">
-                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 <span>Kelola Staff</span>
             </a>
             <a href="setting.html" class="sidebar-item">
-                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 <span>Pengaturan</span>
             </a>
         </nav>
-
         <div class="sidebar-divider"></div>
-
         <button id="logout-btn" class="sidebar-logout">
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-            </svg>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
             <span>Keluar</span>
         </button>
-
         <p class="sidebar-version">RTI Dashboard v1.0</p>
     </aside>
 
-    <!-- MAIN -->
     <main class="panel-main">
         <div class="panel-welcome">
             <div>
@@ -210,19 +199,16 @@
                     </div>
                 </div>
 
-                <!-- Loading -->
                 <div id="loading-state" class="text-center py-8">
                     <div class="saving-dot" style="margin:0 auto 8px;width:12px;height:12px;"></div>
                     <p style="font-size:13px;color:var(--text3);">Memuat data staff...</p>
                 </div>
 
-                <!-- Staff list -->
                 <div id="staff-container" class="hidden"></div>
             </div>
         </div>
     </main>
 
-    <!-- Toast -->
     <div id="toast" class="toast"></div>
 
     <script type="module">
@@ -241,12 +227,10 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Cek sesi
         const sessionRaw = sessionStorage.getItem('rti_admin');
         if (!sessionRaw) { window.location.href = 'index.html'; }
         const { name, email, photo } = JSON.parse(sessionRaw);
 
-        // Isi user info
         function fillUser(nameEl, emailEl, photoEl, fallbackEl) {
             if (nameEl) nameEl.textContent = name || 'Admin';
             if (emailEl) emailEl.textContent = email || '';
@@ -275,36 +259,44 @@
             document.getElementById('sidebar-fallback')
         );
 
-        // Theme
-        const savedTheme = localStorage.getItem('rti_panel_theme') || 'dark';
-        document.body.classList.toggle('light', savedTheme === 'light');
+        document.body.classList.toggle('light', (localStorage.getItem('rti_panel_theme') || 'dark') === 'light');
 
-        // ── Load staff ──
-        const SECTION_LABELS = {
-            founder:  'Founder',
-            director: 'Directors',
-            core:     'Core Staff',
-            staff:    'Staff'
-        };
+        const SECTION_LABELS = { founder: 'Founder', director: 'Directors', core: 'Core Staff', staff: 'Staff' };
         const SECTION_ORDER = ['founder', 'director', 'core', 'staff'];
 
         async function loadStaff() {
             try {
-                const q = query(collection(db, 'stafflist'), orderBy('urutan'));
+                const q = query(collection(db, 'stafflist'), orderBy('Urutan'));
                 const snap = await getDocs(q);
+
+                // ── DEBUG: tampil di layar ──
+                const debugInfo = snap.docs.map(d => {
+                    const data = d.data();
+                    return `${d.id} → Tipe:${data.Tipe||data.tipe||'?'} Jabatan:${data.Jabatan||data.jabatan||'?'} Nama:${data.Nama||data.nama||'?'}`;
+                }).join('<br>');
+
+                document.getElementById('loading-state').innerHTML = `
+                    <div class="debug-box">
+                        <b>DEBUG — ${snap.size} dokumen ditemukan:</b><br><br>
+                        ${debugInfo || 'Tidak ada data'}
+                    </div>
+                    <p style="font-size:12px;color:var(--text3);">Memproses...</p>
+                `;
 
                 const grouped = { founder: [], director: [], core: [], staff: [] };
                 snap.forEach(d => {
-    const raw = d.data();
-    const data = {
-        id: d.id,
-        jabatan: raw.Jabatan || raw.jabatan || '',
-        nama: raw.Nama || raw.nama || '',
-        tipe: raw.Tipe || raw.tipe || '',
-        urutan: raw.Urutan || raw.urutan || 0
-    };
-    if (grouped[data.tipe]) grouped[data.tipe].push(data);
-});
+                    const raw = d.data();
+                    const data = {
+                        id: d.id,
+                        jabatan: raw.Jabatan || raw.jabatan || '',
+                        nama: raw.Nama || raw.nama || '',
+                        tipe: (raw.Tipe || raw.tipe || '').toLowerCase(),
+                        urutan: raw.Urutan || raw.urutan || 0
+                    };
+                    if (grouped[data.tipe] !== undefined) {
+                        grouped[data.tipe].push(data);
+                    }
+                });
 
                 const container = document.getElementById('staff-container');
                 container.innerHTML = '';
@@ -327,13 +319,10 @@
                         row.innerHTML = `
                             <span class="staff-num">${item.id}</span>
                             <span class="staff-jabatan">${item.jabatan}</span>
-                            <input
-                                class="staff-nama-input"
-                                type="text"
-                                value="${item.nama || ''}"
+                            <input class="staff-nama-input" type="text"
+                                value="${item.nama}"
                                 placeholder="— Kosong —"
-                                data-id="${item.id}"
-                            >
+                                data-id="${item.id}">
                             <button class="save-btn" data-id="${item.id}" title="Simpan">
                                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
@@ -349,12 +338,9 @@
                 document.getElementById('loading-state').classList.add('hidden');
                 container.classList.remove('hidden');
 
-                // Event save btn
                 container.querySelectorAll('.save-btn').forEach(btn => {
                     btn.addEventListener('click', () => saveNama(btn.dataset.id));
                 });
-
-                // Enter di input
                 container.querySelectorAll('.staff-nama-input').forEach(inp => {
                     inp.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter') saveNama(inp.dataset.id);
@@ -363,7 +349,7 @@
 
             } catch(e) {
                 document.getElementById('loading-state').innerHTML =
-                    `<p style="font-size:13px;color:var(--red);">Gagal memuat: ${e.message}</p>`;
+                    `<div class="debug-box" style="color:red;">Error: ${e.message}<br>Code: ${e.code || '-'}</div>`;
             }
         }
 
@@ -371,10 +357,9 @@
             const input = document.querySelector(`.staff-nama-input[data-id="${docId}"]`);
             const btn = document.querySelector(`.save-btn[data-id="${docId}"]`);
             const newNama = input.value.trim();
-
             btn.classList.add('saving');
             try {
-                await updateDoc(doc(db, 'stafflist', docId), { nama: newNama });
+                await updateDoc(doc(db, 'stafflist', docId), { Nama: newNama });
                 input.classList.add('saved');
                 setTimeout(() => input.classList.remove('saved'), 2000);
                 showToast(`✓ ${newNama || 'Kosong'} berhasil disimpan`);
@@ -394,14 +379,12 @@
 
         loadStaff();
 
-        // Logout
         document.getElementById('logout-btn').addEventListener('click', async () => {
             await signOut(auth).catch(() => {});
             sessionStorage.removeItem('rti_admin');
             window.location.href = 'index.html';
         });
 
-        // Sidebar
         const hamburger = document.getElementById('hamburger');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
