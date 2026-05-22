@@ -295,9 +295,16 @@
 
                 const grouped = { founder: [], director: [], core: [], staff: [] };
                 snap.forEach(d => {
-                    const data = { id: d.id, ...d.data() };
-                    if (grouped[data.tipe]) grouped[data.tipe].push(data);
-                });
+    const raw = d.data();
+    const data = {
+        id: d.id,
+        jabatan: raw.Jabatan || raw.jabatan || '',
+        nama: raw.Nama || raw.nama || '',
+        tipe: raw.Tipe || raw.tipe || '',
+        urutan: raw.Urutan || raw.urutan || 0
+    };
+    if (grouped[data.tipe]) grouped[data.tipe].push(data);
+});
 
                 const container = document.getElementById('staff-container');
                 container.innerHTML = '';
